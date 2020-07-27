@@ -133,9 +133,10 @@ void uart_hex_dump(uint8_t* p_data, int length, bool with_colons)
 
 static void send_sigfox(uint8_t* p_data)
 {
-    uart_print("AT&RC\r\n");
-    uart_print("AT&SF=");
+    uart_print("AT$RC\r\n");
+    uart_print("AT$SF=");
     uart_hex_dump(&m_scan.scan_buffer.p_data[25], 6, false);
+    uart_print("\r");
 }
 
 
@@ -169,11 +170,11 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 
                 m_scan.scan_buffer.p_data[30] = rssi;
 
-                uart_print("B: ");
-				uart_hex_dump(m_scan.scan_buffer.p_data, 31, true);
-                uart_print("=======\r\n\n");
+//                uart_print("B: ");
+//				uart_hex_dump(m_scan.scan_buffer.p_data, 31, true);
+//                uart_print("=======\r\n\n");
 
-                if(0 == (beacon_count & 0x000000ff))
+                if(0 == (beacon_count & 0x000001ff))
 				{
                     send_sigfox(m_scan.scan_buffer.p_data);
 				}
@@ -428,10 +429,10 @@ int main(void)
     scan_init();
 
     // Start execution.
-    uart_print("\r\n\r\n");
-    uart_print("------------------\r\n");
-    uart_print("| BEACON SCANNER |\r\n");
-    uart_print("------------------\r\n");
+//    uart_print("\r\n\r\n");
+//    uart_print("------------------\r\n");
+//    uart_print("| BEACON SCANNER |\r\n");
+//    uart_print("------------------\r\n");
 
     scan_start();
 
